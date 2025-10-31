@@ -84,24 +84,25 @@ export class BurpSenseBot {
   async requestFromRickBot(commandText, waitMs, chatId) {
     try {
       const userClient = this.getUserClient();
-      if (userClient?.ready) {
-        const since = Date.now();
-        const sent = await userClient.sendText(chatId, `${commandText}`);
-        const viaUser = await userClient.pollBotReplies({
-          chatId,
-          fromUsername: config.telegram.rickBurpUsername,
-          sinceMs: since - 1000,
-          replyToMsgId: sent?.id || null,
-          textIncludes: ['Trending', '𝕏', 'twitter.com', 'x.com'],
-          timeoutMs: waitMs,
-          pollIntervalMs: 3000,
-          maxBatch: 120
-        });
-        if (viaUser?.text || (viaUser?.urls?.length || 0) > 0) {
-          return { text: viaUser.text, urls: viaUser.urls };
-        }
-      } else if (this.bot?.telegram) {
-        await this.bot.telegram.sendMessage(chatId, `${commandText}`);
+      if (!userClient?.ready) {
+        logger.warn('User client not ready; cannot query RickBurpBot without a Telegram user session');
+        return { text: '', urls: [] };
+      }
+
+      const since = Date.now();
+      const sent = await userClient.sendText(chatId, `${commandText}`);
+      const viaUser = await userClient.pollBotReplies({
+        chatId,
+        fromUsername: config.telegram.rickBurpUsername,
+        sinceMs: since - 1000,
+        replyToMsgId: sent?.id || null,
+        textIncludes: ['Trending', '𝕏', 'twitter.com', 'x.com'],
+        timeoutMs: waitMs,
+        pollIntervalMs: 3000,
+        maxBatch: 120
+      });
+      if (viaUser?.text || (viaUser?.urls?.length || 0) > 0) {
+        return { text: viaUser.text, urls: viaUser.urls };
       }
 
       const start = Date.now();

@@ -3,7 +3,7 @@
 This project contains the MTProto helper that powers the BurpSense workflow. It
 can:
 
-- Post `/tt@rick` and `/xt@rick` in a target chat using a Telegram user session.
+- Post `/tt@rick` and `/xt@rick` in a target chat using a Telegram **user session only** (RickBurpBot ignores Bot API messages).
 - Wait for RickBurpBot's reply and parse it for URLs, profile handles, and raw
   contract addresses.
 - Fetch those URLs through Nitter mirrors to extract any additional contract
