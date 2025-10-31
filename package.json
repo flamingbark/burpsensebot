@@ -2,9 +2,11 @@
   "name": "burpsensebot",
   "version": "1.0.0",
   "type": "module",
-  "description": "MTProto helper that queries RickBurpBot, scans responses through Nitter, and posts Burp Smells summaries.",
+  "description": "MTProto helper that sends RickBurpBot prompts, scans responses through Nitter, and posts Burp Smells summaries.",
   "main": "src/burpsensebot/index.js",
   "scripts": {
+    "start": "node src/sendPrompts.js",
+    "send:prompts": "node src/sendPrompts.js",
     "burpsense:user": "node src/burpsensebot/runUserDiscovery.js"
   },
   "dependencies": {
